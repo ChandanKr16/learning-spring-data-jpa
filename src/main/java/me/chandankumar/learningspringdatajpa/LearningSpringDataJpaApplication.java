@@ -2,6 +2,8 @@ package me.chandankumar.learningspringdatajpa;
 
 import com.github.javafaker.Faker;
 import me.chandankumar.learningspringdatajpa.entities.Student;
+import me.chandankumar.learningspringdatajpa.entities.StudentIdCard;
+import me.chandankumar.learningspringdatajpa.repositories.StudentIdCardRepository;
 import me.chandankumar.learningspringdatajpa.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -21,6 +23,10 @@ public class LearningSpringDataJpaApplication {
     @Autowired
     StudentRepository studentRepository;
 
+    @Autowired
+    StudentIdCardRepository studentIdCardRepository;
+
+
     public static void main(String[] args) {
         SpringApplication.run(LearningSpringDataJpaApplication.class, args);
     }
@@ -37,17 +43,19 @@ public class LearningSpringDataJpaApplication {
 
         return args -> {
 
-            addStudentData();
+            addStudentIdCard();
 
+
+            //addStudentData();
             //jpaQuery();
 
             //sorting();
 
-            PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("firstName").ascending());
-
-            studentRepository.findAll(pageRequest)
-                    .getContent()
-                    .forEach(System.out::println);
+//            PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("firstName").ascending());
+//
+//            studentRepository.findAll(pageRequest)
+//                    .getContent()
+//                    .forEach(System.out::println);
 
         };
     }
@@ -90,6 +98,19 @@ public class LearningSpringDataJpaApplication {
 
             studentRepository.save(new Student(firstName, lastName, email, age));
         }
+    }
+
+    private void addStudentIdCard(){
+        Faker faker = new Faker();
+
+        //for(int i = 0; i < 50; i++){
+            String firstName = faker.name().firstName();
+            String lastName = faker.name().lastName();
+            String email = String.format("%s.%s@gmail.com", firstName, lastName);
+            int age = faker.random().nextInt(15, 100);
+
+            studentIdCardRepository.save(new StudentIdCard("123459", new Student(firstName, lastName, email, age)));
+       // }
     }
 
 }
