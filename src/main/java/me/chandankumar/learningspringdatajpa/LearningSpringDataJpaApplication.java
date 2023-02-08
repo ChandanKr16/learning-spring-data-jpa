@@ -19,7 +19,6 @@ import java.util.List;
 @SpringBootApplication
 public class LearningSpringDataJpaApplication {
 
-
     @Autowired
     StudentRepository studentRepository;
 

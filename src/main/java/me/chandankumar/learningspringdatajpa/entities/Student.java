@@ -33,6 +33,9 @@ public class Student {
     @Column(nullable = false)
     private Integer age;
 
+    @OneToOne(mappedBy = "student")
+    private StudentIdCard studentIdCard;
+
     public Student(String firstName, String lastName, String email, Integer age) {
         this.firstName = firstName;
         this.lastName = lastName;

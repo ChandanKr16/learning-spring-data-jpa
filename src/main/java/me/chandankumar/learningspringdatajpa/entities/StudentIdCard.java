@@ -25,8 +25,10 @@ public class StudentIdCard {
     @Column(nullable = false)
     private String cardNumber;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "student_id", referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL,
+    fetch = FetchType.EAGER)
+    @JoinColumn(name = "student_id",
+            referencedColumnName = "id")
     private Student student;
 
     public StudentIdCard(String cardNumber) {
