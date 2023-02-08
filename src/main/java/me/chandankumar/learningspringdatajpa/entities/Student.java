@@ -33,7 +33,9 @@ public class Student {
     @Column(nullable = false)
     private Integer age;
 
-    @OneToOne(mappedBy = "student")
+    @OneToOne(mappedBy = "student",
+        orphanRemoval = true
+    )
     private StudentIdCard studentIdCard;
 
     public Student(String firstName, String lastName, String email, Integer age) {
