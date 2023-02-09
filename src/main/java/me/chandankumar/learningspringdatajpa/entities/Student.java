@@ -1,16 +1,18 @@
 package me.chandankumar.learningspringdatajpa.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "Student")
 @Table(name = "student",
         uniqueConstraints = {
         @UniqueConstraint(name = "student_email_unique", columnNames = "email")
 })
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Student {
@@ -34,14 +36,50 @@ public class Student {
     private Integer age;
 
     @OneToOne(mappedBy = "student",
-        orphanRemoval = true
+        orphanRemoval = true,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
     )
     private StudentIdCard studentIdCard;
+
+    @OneToMany(mappedBy = "student",
+    orphanRemoval = true,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            fetch = FetchType.EAGER
+    )
+    private List<Book> books = new ArrayList<>();
 
     public Student(String firstName, String lastName, String email, Integer age) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.age = age;
+    }
+
+    public void addBook(Book book){
+        if(!this.books.contains(book)){
+            books.add(book);
+            book.setStudent(this);
+        }
+    }
+
+
+    public void removeBook(Book book){
+        if(this.books.contains(book)){
+            this.books.remove(book);
+            book.setStudent(null);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", age=" + age +
+                ", studentIdCard=" + studentIdCard +
+                ", books=" + books +
+                '}';
     }
 }

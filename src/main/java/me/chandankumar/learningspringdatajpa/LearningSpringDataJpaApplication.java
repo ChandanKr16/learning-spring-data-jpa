@@ -1,6 +1,7 @@
 package me.chandankumar.learningspringdatajpa;
 
 import com.github.javafaker.Faker;
+import me.chandankumar.learningspringdatajpa.entities.Book;
 import me.chandankumar.learningspringdatajpa.entities.Student;
 import me.chandankumar.learningspringdatajpa.entities.StudentIdCard;
 import me.chandankumar.learningspringdatajpa.repositories.StudentIdCardRepository;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @SpringBootApplication
@@ -42,7 +44,23 @@ public class LearningSpringDataJpaApplication {
 
         return args -> {
 
-            addStudentIdCard();
+            //addStudentIdCard();
+
+            Student student = new Student("Chandan", "Kumar", "ckp1606@gmail.com", 23);
+
+            student.addBook(new Book("Java", LocalDateTime.now()));
+            student.addBook(new Book("C++", LocalDateTime.now().minusDays(4)));
+
+            StudentIdCard studentIdCard = new StudentIdCard(
+                    "123456789",
+                    student);
+
+            student.setStudentIdCard(studentIdCard);
+
+            studentRepository.save(student);
+
+            studentRepository.findAll().forEach(System.out::println);
+
 
 
             //addStudentData();

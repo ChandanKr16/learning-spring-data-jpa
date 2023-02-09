@@ -2,15 +2,15 @@ package me.chandankumar.learningspringdatajpa.entities;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity(name = "StudentIdCard")
 @Table(name = "student_id_card", uniqueConstraints = {
         @UniqueConstraint(name = "student_card_number_unique",
                 columnNames = "cardNumber")
 })
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class StudentIdCard {
 
@@ -25,8 +25,7 @@ public class StudentIdCard {
     @Column(nullable = false)
     private String cardNumber;
 
-    @OneToOne(cascade = CascadeType.ALL,
-    fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "student_id",
             referencedColumnName = "id",
         foreignKey = @ForeignKey(name = "student_id_card_student_id_fk")
@@ -40,5 +39,13 @@ public class StudentIdCard {
     public StudentIdCard(String cardNumber, Student student) {
         this.cardNumber = cardNumber;
         this.student = student;
+    }
+
+    @Override
+    public String toString() {
+        return "StudentIdCard{" +
+                "id=" + id +
+                ", cardNumber='" + cardNumber + '\'' +
+                '}';
     }
 }
