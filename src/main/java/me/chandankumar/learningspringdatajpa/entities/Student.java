@@ -48,20 +48,23 @@ public class Student {
     )
     private List<Book> books = new ArrayList<>();
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-            fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "enrollment",
-            joinColumns = @JoinColumn(
-                    name = "student_id",
-                    foreignKey = @ForeignKey(name = "enrollment_student_id_fk")
-            ),
-            inverseJoinColumns = @JoinColumn(
-                    name = "course_id",
-                    foreignKey = @ForeignKey(name = "enrollment_course_id_fk")
-            )
-    )
-    private List<Course> courses = new ArrayList<>();
+//    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+//            fetch = FetchType.EAGER)
+//    @JoinTable(
+//            name = "enrollment",
+//            joinColumns = @JoinColumn(
+//                    name = "student_id",
+//                    foreignKey = @ForeignKey(name = "enrollment_student_id_fk")
+//            ),
+//            inverseJoinColumns = @JoinColumn(
+//                    name = "course_id",
+//                    foreignKey = @ForeignKey(name = "enrollment_course_id_fk")
+//            )
+//    )
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+    mappedBy = "student")
+    private List<Enrollment> enrollments = new ArrayList<>();
 
     public Student(String firstName, String lastName, String email, Integer age) {
         this.firstName = firstName;
@@ -85,18 +88,30 @@ public class Student {
         }
     }
 
-    public List<Course> getCourses(){
-        return courses;
+//    public List<Course> getCourses(){
+//        return courses;
+//    }
+//
+//    public void enrollToCourse(Course course){
+//        courses.add(course);
+//        course.getStudents().add(this);
+//    }
+//
+//    public void unEnrollCourse(Course course){
+//        courses.remove(course);
+//        course.getStudents().remove(this);
+//    }
+
+
+
+    public void addEnrollment(Enrollment enrollment){
+        if(!enrollments.contains(enrollment)){
+            enrollments.add(enrollment);
+        }
     }
 
-    public void enrollToCourse(Course course){
-        courses.add(course);
-        course.getStudents().add(this);
-    }
-
-    public void unEnrollCourse(Course course){
-        courses.remove(course);
-        course.getStudents().remove(this);
+    public void removeEnrollment(Enrollment enrollment){
+        enrollments.remove(enrollment);
     }
 
 
@@ -110,7 +125,6 @@ public class Student {
                 ", age=" + age +
                 ", studentIdCard=" + studentIdCard +
                 ", books=" + books +
-                ", courses=" + courses +
                 '}';
     }
 }

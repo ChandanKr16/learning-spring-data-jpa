@@ -26,12 +26,25 @@ public class Course {
     @Column(nullable = false)
     private String department;
 
-    @ManyToMany(mappedBy = "courses")
-    private List<Student> students = new ArrayList<>();
+//    @ManyToMany(mappedBy = "courses")
+//    private List<Student> students = new ArrayList<>();
+
+    @OneToMany(mappedBy = "course", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<Enrollment> enrollments = new ArrayList<>();
 
     public Course(String name, String department) {
         this.name = name;
         this.department = department;
+    }
+
+    public void addEnrollment(Enrollment enrollment){
+        if(!enrollments.contains(enrollment)){
+            enrollments.add(enrollment);
+        }
+    }
+
+    public void removeEnrollment(Enrollment enrollment){
+        enrollments.remove(enrollment);
     }
 
     @Override

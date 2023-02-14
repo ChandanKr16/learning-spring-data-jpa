@@ -1,10 +1,7 @@
 package me.chandankumar.learningspringdatajpa;
 
 import com.github.javafaker.Faker;
-import me.chandankumar.learningspringdatajpa.entities.Book;
-import me.chandankumar.learningspringdatajpa.entities.Course;
-import me.chandankumar.learningspringdatajpa.entities.Student;
-import me.chandankumar.learningspringdatajpa.entities.StudentIdCard;
+import me.chandankumar.learningspringdatajpa.entities.*;
 import me.chandankumar.learningspringdatajpa.repositories.StudentIdCardRepository;
 import me.chandankumar.learningspringdatajpa.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +54,14 @@ public class LearningSpringDataJpaApplication {
                     student);
 
             student.setStudentIdCard(studentIdCard);
-            student.enrollToCourse(new Course("Java", "IT"));
-            student.enrollToCourse(new Course("C++", "IT"));
+//            student.enrollToCourse(new Course("Java", "IT"));
+//            student.enrollToCourse(new Course("C++", "IT"));
+
+            student.addEnrollment(new Enrollment(new EnrollmentId(1L, 1L), student,
+                    new Course("Java", "IT")));
+            student.addEnrollment(new Enrollment(new EnrollmentId(1L, 2L), student,
+                    new Course("C++", "IT")));
+
 
             studentRepository.save(student);
 
